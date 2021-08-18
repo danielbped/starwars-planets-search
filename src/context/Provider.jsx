@@ -10,6 +10,14 @@ function Provider({ children }) {
     loading: true,
   });
 
+  const [filters, setFilters] = useState({
+    name: '',
+  });
+
+  const handleChange = ({ target: { name, value } }) => {
+    setFilters({ ...filters, [name]: value });
+  };
+
   useEffect(() => {
     const requestAPI = async () => {
       const result = await fetch(API_URL);
@@ -20,7 +28,7 @@ function Provider({ children }) {
   });
 
   return (
-    <Context.Provider value={ data }>
+    <Context.Provider value={ { data, handleChange, filters } }>
       { children }
     </Context.Provider>
   );

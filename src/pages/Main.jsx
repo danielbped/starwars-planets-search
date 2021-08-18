@@ -5,7 +5,7 @@ import Loading from '../components/Loading';
 import Context from '../context/Context';
 
 function Main() {
-  const { loading } = useContext(Context);
+  const { data: { loading } } = useContext(Context);
 
   return (
     <main>

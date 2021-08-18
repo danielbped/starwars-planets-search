@@ -3,12 +3,17 @@ import TableHead from './TableHead';
 import Context from '../context/Context';
 
 function Table() {
-  const { planets: { results } } = useContext(Context);
+  const {
+    data: { planets: { results } },
+    filters: { name: filterName },
+  } = useContext(Context);
+
+  const filteredResults = results.filter((result) => result.name.includes(filterName));
   return (
     <table>
       <thead>
         <TableHead />
-        { results.map(({
+        { filteredResults.map(({
           name,
           rotation_period: rotationPeriod,
           orbital_period: orbitalPeriod,
