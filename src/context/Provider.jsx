@@ -15,8 +15,8 @@ function Provider({ children }) {
       name: '',
     },
     filterByNumericValues: {
-      column: 'population',
-      comparison: 'bigger',
+      column: '',
+      comparison: '',
       value: '',
       filtered: false,
     },
@@ -26,18 +26,10 @@ function Provider({ children }) {
     setFilters({ ...filters, filterByName: { [name]: value } });
   };
 
-  const handleChangeValues = ({ target: { name, value } }) => {
+  const handleClickFilter = (filter) => {
     setFilters({
       ...filters,
-      filterByNumericValues: {
-        ...filters.filterByNumericValues, [name]: value } });
-  };
-
-  const handleClickFilter = () => {
-    setFilters({
-      ...filters,
-      filterByNumericValues: {
-        ...filters.filterByNumericValues, filtered: true } });
+      filterByNumericValues: { ...filter, filtered: true } });
   };
 
   useEffect(() => {
@@ -51,7 +43,7 @@ function Provider({ children }) {
 
   return (
     <Context.Provider
-      value={ { data, handleChangeName, filters, handleChangeValues, handleClickFilter } }
+      value={ { data, handleChangeName, filters, handleClickFilter } }
     >
       { children }
     </Context.Provider>

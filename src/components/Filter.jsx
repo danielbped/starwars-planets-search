@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
 import SelectColumn from './SelectColumn';
 import SelectComparison from './SelectComparison';
@@ -6,9 +6,18 @@ import SelectComparison from './SelectComparison';
 function Filter() {
   const {
     handleChangeName,
-    handleChangeValues,
     handleClickFilter,
   } = useContext(Context);
+
+  const [filter, setFilter] = useState({
+    column: 'population',
+    comparison: 'bigger',
+    value: '',
+  });
+
+  const handleChange = ({ target: { name, value } }) => {
+    setFilter({ ...filter, [name]: value });
+  };
 
   return (
     <div>
@@ -19,19 +28,19 @@ function Filter() {
         placeholder="Digite para buscar"
         data-testid="name-filter"
       />
-      <SelectColumn />
-      <SelectComparison />
+      <SelectColumn onChange={ (e) => handleChange(e) } />
+      <SelectComparison onChange={ (e) => handleChange(e) } />
       <input
         type="number"
         name="value"
         placeholder="Digite um número"
         data-testid="value-filter"
-        onChange={ (e) => handleChangeValues(e) }
+        onChange={ (e) => handleChange(e) }
       />
       <button
         data-testid="button-filter"
         type="button"
-        onClick={ () => handleClickFilter() }
+        onClick={ () => handleClickFilter(filter) }
       >
         Aplicar Filtro
       </button>

@@ -12,12 +12,17 @@ function Table() {
   } = useContext(Context);
 
   const filteredByName = results.filter((result) => result.name.includes(filterName));
-  const filteredByNumber = !filtered ? filteredByName
+  const filteredByNumber = !filtered || value === '' ? filteredByName
     : filteredByName.filter((item) => {
-      if (comparison === 'bigger') return item[column] >= Number(value);
-      if (comparison === 'smaller') return item[column] <= Number(value);
-      return item[column] === Number(value);
+      if (comparison === 'bigger') {
+        return parseInt(item[column], 10) > parseInt(value, 10);
+      }
+      if (comparison === 'smaller') {
+        return parseInt(item[column], 10) < parseInt(value, 10);
+      }
+      return parseInt(item[column], 10) === parseInt(value, 10);
     });
+
   return (
     <table>
       <thead>
