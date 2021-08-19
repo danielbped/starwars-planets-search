@@ -5,15 +5,24 @@ import Context from '../context/Context';
 function Table() {
   const {
     data: { planets: { results } },
-    filters: { name: filterName },
+    filters: {
+      filterByName: { name: filterName },
+      filterByNumericValues: { column, comparison, value, filtered },
+    },
   } = useContext(Context);
 
-  const filteredResults = results.filter((result) => result.name.includes(filterName));
+  const filteredByName = results.filter((result) => result.name.includes(filterName));
+  const filteredByNumber = !filtered ? filteredByName
+    : filteredByName.filter((item) => {
+      if (comparison === 'bigger') return item[column] >= Number(value);
+      if (comparison === 'smaller') return item[column] <= Number(value);
+      return item[column] === Number(value);
+    });
   return (
     <table>
       <thead>
         <TableHead />
-        { filteredResults.map(({
+        { filteredByNumber.map(({
           name,
           rotation_period: rotationPeriod,
           orbital_period: orbitalPeriod,

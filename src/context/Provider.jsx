@@ -11,11 +11,33 @@ function Provider({ children }) {
   });
 
   const [filters, setFilters] = useState({
-    name: '',
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: {
+      column: 'population',
+      comparison: 'bigger',
+      value: '',
+      filtered: false,
+    },
   });
 
-  const handleChange = ({ target: { name, value } }) => {
-    setFilters({ ...filters, [name]: value });
+  const handleChangeName = ({ target: { name, value } }) => {
+    setFilters({ ...filters, filterByName: { [name]: value } });
+  };
+
+  const handleChangeValues = ({ target: { name, value } }) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: {
+        ...filters.filterByNumericValues, [name]: value } });
+  };
+
+  const handleClickFilter = () => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: {
+        ...filters.filterByNumericValues, filtered: true } });
   };
 
   useEffect(() => {
@@ -28,7 +50,9 @@ function Provider({ children }) {
   });
 
   return (
-    <Context.Provider value={ { data, handleChange, filters } }>
+    <Context.Provider
+      value={ { data, handleChangeName, filters, handleChangeValues, handleClickFilter } }
+    >
       { children }
     </Context.Provider>
   );
