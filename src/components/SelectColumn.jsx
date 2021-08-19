@@ -2,18 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from './Select';
 
-function SelectColumn({ onChange }) {
-  const selectOptions = [
-    { name: 'population', value: 'population' },
-    { name: 'orbital_period', value: 'orbital_period' },
-    { name: 'diameter', value: 'diameter' },
-    { name: 'rotation_period', value: 'rotation_period' },
-    { name: 'surface_water', value: 'surface_water' },
-  ];
-
+function SelectColumn({ options, onChange }) {
   return (
     <Select
-      options={ selectOptions }
+      options={ options }
       onChange={ onChange }
       dataTestid="column-filter"
       selectName="column"
@@ -23,6 +15,7 @@ function SelectColumn({ onChange }) {
 
 SelectColumn.propTypes = {
   onChange: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 export default SelectColumn;
