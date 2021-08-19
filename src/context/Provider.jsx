@@ -10,13 +10,15 @@ function Provider({ children }) {
     loading: true,
   });
 
-  const [filters, setFilters] = useState({
+  const INITIAL_STATE = {
     filterByName: {
       name: '',
     },
     filterByNumericValues: [],
     filtered: false,
-  });
+  };
+
+  const [filters, setFilters] = useState(INITIAL_STATE);
 
   const handleChangeName = ({ target: { name, value } }) => {
     setFilters({ ...filters, filterByName: { [name]: value } });
@@ -25,7 +27,9 @@ function Provider({ children }) {
   const handleClickFilter = (filter) => {
     setFilters({
       ...filters,
-      filterByNumericValues: { ...filter, filtered: true } });
+      filterByNumericValues: [...filters.filterByNumericValues, { ...filter }],
+      filtered: true,
+    });
   };
 
   useEffect(() => {
@@ -39,7 +43,14 @@ function Provider({ children }) {
 
   return (
     <Context.Provider
-      value={ { data, handleChangeName, filters, handleClickFilter } }
+      value={ {
+        data,
+        handleChangeName,
+        filters,
+        handleClickFilter,
+        setFilters,
+        INITIAL_STATE,
+      } }
     >
       { children }
     </Context.Provider>

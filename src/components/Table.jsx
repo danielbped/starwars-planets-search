@@ -7,13 +7,16 @@ function Table() {
     data: { planets: { results } },
     filters: {
       filterByName: { name: filterName },
-      filterByNumericValues: { column, comparison, value, filtered },
+      filterByNumericValues,
+      filtered,
     },
   } = useContext(Context);
 
   const filteredByName = results.filter((result) => result.name.includes(filterName));
-  const filteredByNumber = !filtered || value === '' ? filteredByName
+  const filteredByNumber = !filtered ? filteredByName
     : filteredByName.filter((item) => {
+      if (filterByNumericValues.length === 0) return filteredByName;
+      const { column, value, comparison } = filterByNumericValues[0];
       if (comparison === 'maior que') {
         return parseInt(item[column], 10) > parseInt(value, 10);
       }
