@@ -14,10 +14,10 @@ function Table() {
   const filteredByName = results.filter((result) => result.name.includes(filterName));
   const filteredByNumber = !filtered || value === '' ? filteredByName
     : filteredByName.filter((item) => {
-      if (comparison === 'bigger') {
+      if (comparison === 'maior que') {
         return parseInt(item[column], 10) > parseInt(value, 10);
       }
-      if (comparison === 'smaller') {
+      if (comparison === 'menor que') {
         return parseInt(item[column], 10) < parseInt(value, 10);
       }
       return parseInt(item[column], 10) === parseInt(value, 10);

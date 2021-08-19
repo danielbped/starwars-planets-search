@@ -4,9 +4,9 @@ import Select from './Select';
 
 function SelectComparison({ onChange }) {
   const selectOptions = [
-    { name: 'maior que', value: 'bigger' },
-    { name: 'menor que', value: 'smaller' },
-    { name: 'igual a', value: 'equal' },
+    { name: 'maior que', value: 'maior que' },
+    { name: 'menor que', value: 'menor que' },
+    { name: 'igual a', value: 'igual a' },
   ];
 
   return (

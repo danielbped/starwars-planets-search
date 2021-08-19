@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 
-const API_URL = 'https://swapi.dev/api/planets/';
+const API_URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
 function Provider({ children }) {
   const [data, setData] = useState({
@@ -14,12 +14,8 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: {
-      column: '',
-      comparison: '',
-      value: '',
-      filtered: false,
-    },
+    filterByNumericValues: [],
+    filtered: false,
   });
 
   const handleChangeName = ({ target: { name, value } }) => {
