@@ -27,7 +27,7 @@ function Provider({ children }) {
   const handleClickFilter = (filter) => {
     setFilters({
       ...filters,
-      filterByNumericValues: [...filters.filterByNumericValues, { ...filter }],
+      filterByNumericValues: [{ ...filter }, ...filters.filterByNumericValues],
       filtered: true,
     });
   };
