@@ -2,6 +2,42 @@ import React, { useContext } from 'react';
 import TableHead from './TableHead';
 import Context from '../context/Context';
 
+const sortItems = (sorted, filteredByNumber, columnSort, sort) => {
+  const magicNumber = -1;
+  const sortedItems = sorted ? filteredByNumber.sort(
+    (a, b) => {
+      const acc = parseInt(a[columnSort], 10);
+      const curr = parseInt(b[columnSort], 10);
+      switch (sort) {
+      case 'ASC':
+        return (acc > curr) ? 1 : magicNumber;
+      default:
+        return (acc > curr) ? magicNumber : 1;
+      }
+    },
+  ) : filteredByNumber.sort((a, b) => ((a.name > b.name) ? 1 : magicNumber));
+  return sortedItems;
+};
+
+const filterByNumber = (filtered, filteredByName, filterByNumericValues) => {
+  const filteredByNumberResults = !filtered ? filteredByName
+    : filteredByName.filter((item) => {
+      if (filterByNumericValues.length === 0) return filteredByName;
+      const { column, value, comparison } = filterByNumericValues[0];
+      const itemNumber = parseInt(item[column], 10);
+      const valueNumber = parseInt(value, 10);
+      switch (comparison) {
+      case 'maior que':
+        return itemNumber > valueNumber;
+      case 'menor que':
+        return itemNumber < valueNumber;
+      default:
+        return itemNumber === valueNumber;
+      }
+    });
+  return filteredByNumberResults;
+};
+
 function Table() {
   const {
     data: { planets: { results } },
@@ -14,37 +50,16 @@ function Table() {
     },
   } = useContext(Context);
 
-  const filteredByName = results.filter((result) => result.name.includes(filterName));
-  const filteredByNumber = !filtered ? filteredByName
-    : filteredByName.filter((item) => {
-      if (filterByNumericValues.length === 0) return filteredByName;
-      const { column, value, comparison } = filterByNumericValues[0];
-      if (comparison === 'maior que') {
-        return parseInt(item[column], 10) > parseInt(value, 10);
-      }
-      if (comparison === 'menor que') {
-        return parseInt(item[column], 10) < parseInt(value, 10);
-      }
-      return parseInt(item[column], 10) === parseInt(value, 10);
-    });
-  const magicNumber = -1;
-  const sortedItems = sorted ? filteredByNumber.sort(
-    (a, b) => {
-      if (sort === 'ASC') {
-        return (
-          (parseInt(a[columnSort], 10) > parseInt(b[columnSort], 10)
-          ) ? 1 : magicNumber);
-      }
-      return (
-        (parseInt(a[columnSort], 10) > parseInt(b[columnSort], 10)
-        ) ? magicNumber : 1);
-    },
-  ) : filteredByNumber.sort((a, b) => ((a.name > b.name) ? 1 : magicNumber));
+  const filteredByName = results.filter(({ name }) => name.includes(filterName));
+  const filteredByNumber = filterByNumber(
+    filtered, filteredByName, filterByNumericValues,
+  );
+
   return (
     <table>
       <thead>
         <TableHead />
-        { sortedItems.map(({
+        { sortItems(sorted, filteredByNumber, columnSort, sort).map(({
           name,
           rotation_period: rotationPeriod,
           orbital_period: orbitalPeriod,
