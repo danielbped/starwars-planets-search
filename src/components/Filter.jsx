@@ -8,6 +8,8 @@ function Filter() {
   const {
     handleChangeName,
     handleClickFilter,
+    handleChangeOrder,
+    handleClickOrder,
   } = useContext(Context);
 
   const FILTER_INITIAL_STATE = {
@@ -64,6 +66,51 @@ function Filter() {
           data-testid="button-filter"
           type="button"
           onClick={ () => handleClick() }
+        >
+          Aplicar Filtro
+        </button>
+      </div>
+      <div>
+        <select
+          onChange={ (e) => handleChangeOrder(e) }
+          name="columnSort"
+          data-testid="column-sort"
+        >
+          { OPTIONS_INITIAL_STATE.map((option) => (
+            <option
+              value={ option.value }
+              key={ option.value }
+            >
+              { option.name }
+            </option>
+          ))}
+        </select>
+        <label htmlFor="sort-asc">
+          Crescente
+          <input
+            type="radio"
+            name="sort"
+            id="sort-asc"
+            value="ASC"
+            data-testid="column-sort-input-asc"
+            onChange={ (e) => handleChangeOrder(e) }
+          />
+        </label>
+        <label htmlFor="sort-desc">
+          Decrescente
+          <input
+            type="radio"
+            name="sort"
+            id="sort-desc"
+            value="DESC"
+            data-testid="column-sort-input-desc"
+            onChange={ (e) => handleChangeOrder(e) }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ () => handleClickOrder() }
         >
           Aplicar Filtro
         </button>

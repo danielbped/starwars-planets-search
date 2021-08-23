@@ -7,8 +7,10 @@ function Table() {
     data: { planets: { results } },
     filters: {
       filterByName: { name: filterName },
+      order: { columnSort, sort },
       filterByNumericValues,
       filtered,
+      sorted,
     },
   } = useContext(Context);
 
@@ -25,12 +27,24 @@ function Table() {
       }
       return parseInt(item[column], 10) === parseInt(value, 10);
     });
-
+  const magicNumber = -1;
+  const sortedItems = sorted ? filteredByNumber.sort(
+    (a, b) => {
+      if (sort === 'ASC') {
+        return (
+          (parseInt(a[columnSort], 10) > parseInt(b[columnSort], 10)
+          ) ? 1 : magicNumber);
+      }
+      return (
+        (parseInt(a[columnSort], 10) > parseInt(b[columnSort], 10)
+        ) ? magicNumber : 1);
+    },
+  ) : filteredByNumber.sort((a, b) => ((a.name > b.name) ? 1 : magicNumber));
   return (
     <table>
       <thead>
         <TableHead />
-        { filteredByNumber.map(({
+        { sortedItems.map(({
           name,
           rotation_period: rotationPeriod,
           orbital_period: orbitalPeriod,
@@ -46,7 +60,7 @@ function Table() {
           url,
         }) => (
           <tr key={ name }>
-            <td>{ name }</td>
+            <td data-testid="planet-name">{ name }</td>
             <td>{ rotationPeriod }</td>
             <td>{ orbitalPeriod }</td>
             <td>{ diameter }</td>

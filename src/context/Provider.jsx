@@ -15,6 +15,11 @@ function Provider({ children }) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      columnSort: 'population',
+      sort: '',
+    },
+    sorted: false,
     filtered: false,
   };
 
@@ -30,6 +35,23 @@ function Provider({ children }) {
       filterByNumericValues: [{ ...filter }, ...filters.filterByNumericValues],
       filtered: true,
     });
+  };
+
+  const handleChangeOrder = ({ target: { name, value } }) => {
+    setFilters({
+      ...filters,
+      order: { ...filters.order, [name]: value },
+    });
+  };
+
+  const handleClickOrder = () => {
+    const { columnSort, sort } = filters;
+    if (columnSort !== '' && sort !== '') {
+      setFilters({
+        ...filters,
+        sorted: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -50,6 +72,8 @@ function Provider({ children }) {
         handleClickFilter,
         setFilters,
         INITIAL_STATE,
+        handleChangeOrder,
+        handleClickOrder,
       } }
     >
       { children }
